@@ -1,0 +1,377 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+<title>Happy Birthday! 🎉</title>
+<style>
+:root {
+  --bg: #fdf0f2;
+  --accent: #c44a5e;
+  --accent-dark: #a53646;
+  --paper: #fffafc;
+  --shadow: rgba(0,0,0,0.18);
+  --seal: #8b1e2e;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: system-ui, "Segoe UI", Roboto, Arial, sans-serif;
+  background: linear-gradient(180deg, var(--bg), #fff);
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+  overflow-x: hidden;
+}
+
+.stage {
+  width: 100%;
+  max-width: 680px;
+}
+
+.envelope-wrap {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 84vh;
+  max-height: 820px;
+}
+
+.envelope {
+  width: 86vw;
+  max-width: 440px;
+  aspect-ratio: 3/2;
+  position: relative;
+  perspective: 1200px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.back {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 62%;
+  background: linear-gradient(180deg,#e8b8c2,var(--accent));
+  border-radius: 16px;
+  box-shadow: 0 14px 28px var(--shadow);
+  z-index: 1;
+}
+
+.front {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 62%;
+  background: linear-gradient(180deg,#fce6ea,#f8c6d0);
+  border-radius: 16px;
+  box-shadow: 0 12px 24px var(--shadow);
+  transform-origin: bottom center;
+  z-index: 3;
+}
+
+.flap {
+  position: absolute;
+  top: 0;
+  left: -4%;
+  width: 108%;
+  height: 48%;
+  background: linear-gradient(180deg,#d86c7f,#c14758);
+  border-radius: 50% 50% 12px 12px;
+  transform-origin: top center;
+  box-shadow: 0 14px 26px rgba(0,0,0,0.22);
+  z-index: 4;
+  transition: all 700ms cubic-bezier(.2,.9,.25,1);
+}
+
+/* Wax seal */
+.seal {
+  position: absolute;
+  bottom: 44%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40px;
+  height: 40px;
+  background: var(--seal);
+  border-radius: 50%;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-weight: 700;
+  font-size: 14px;
+  pointer-events: none;
+}
+
+/* Ribbon */
+.ribbon {
+  position: absolute;
+  top: -6%;
+  left: 50%;
+  transform: translateX(-50%) rotate(-3deg);
+  width: 160px;
+  height: 36px;
+  background: var(--accent);
+  color: #fff;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 36px;
+  font-weight: 700;
+  z-index: 11;
+  box-shadow: 0 6px 14px rgba(0,0,0,0.18);
+  transition: opacity .4s ease, transform .4s ease;
+  animation: ribbon-sway 2.5s ease-in-out infinite alternate;
+}
+
+@keyframes ribbon-sway {
+  0% { transform: translateX(-50%) rotate(-3deg); }
+  100% { transform: translateX(-50%) rotate(3deg); }
+}
+
+.card {
+  position: absolute;
+  left: 50%;
+  top: 18%;
+  transform: translateX(-50%);
+  width: 80%;
+  background: var(--paper);
+  border-radius: 12px;
+  padding: 20px;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  text-align: center;
+  box-shadow: 0 8px 18px rgba(0,0,0,0.09);
+  overflow: hidden;
+  border: 2px dashed var(--accent);
+  background-image: radial-gradient(var(--accent-dark) 1px, transparent 1px);
+  background-size: 14px 14px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.6s ease;
+}
+
+.card.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.greeting {
+  padding: 10px 8px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+  line-height: 1.5;
+}
+
+.greeting h1 {
+  margin: 0;
+  font-size: 1.25rem;
+  color: #611d28;
+  font-weight: 800;
+}
+
+.greeting p {
+  margin: 8px 0 0;
+  font-size: 0.95rem;
+  color: #7a3d47;
+  line-height: 1.4;
+}
+
+.personal {
+  margin-top: 10px;
+  font-size: 0.95rem;
+  color: #4b1a21;
+  text-align: justify;
+  line-height: 1.5;
+  hyphens: auto;
+}
+
+/* Floating hearts */
+.hearts {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.heart {
+  position: absolute;
+  bottom: -60px;
+  width: 18px;
+  height: 18px;
+  opacity: 0.85;
+  border-radius: 50%;
+  animation: rise 5200ms linear infinite;
+}
+
+@keyframes rise {
+  0% { transform: translateY(0) scale(0.6); opacity: 0; }
+  10% { opacity: 1; }
+  100% { transform: translateY(-130vh) scale(1.2); opacity: 0; }
+}
+
+.hint {
+  position: absolute;
+  bottom: 8%;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 12px;
+  color: #7a3d47;
+  opacity: 0.95;
+  z-index: 12;
+}
+
+@media (max-width:480px){ 
+  .ribbon { width: 130px; height: 32px; top: -4%; } 
+  .greeting h1 { font-size: 1.05rem; } 
+  .greeting p { font-size: 0.88rem; } 
+}
+</style>
+</head>
+<body>
+<div class="hearts" id="hearts"></div>
+
+<div class="stage">
+  <div class="envelope-wrap">
+    <div class="envelope" id="envelope" role="button" aria-label="Open birthday envelope" tabindex="0">
+      <div class="flap"></div>
+      <div class="back"></div>
+      <div class="front"></div>
+      <div class="seal">❤</div>
+
+      <div class="card" id="card">
+        <div class="greeting">
+          <h1 id="title">Happy Birthday, Mama! 🎉</h1>
+          <p id="subtitle">
+            “For I know the plans I have for you, declares the Lord, plans for welfare and not for evil, to give you a future and a hope.” <br> -Jeremiah 29:11
+          </p>
+          <div class="personal" id="personal">
+            Dear Mama,<br><br>
+            I hope this message finds you well. I know this might be late, but happy birthday, still. Thank you for all the things, memories, foods, and everything else that you've given me. I rarely show my emotions, but do know that I appreciate everything you've done for me, for us. Pasensiya rin kung hindi ako lumalapit o nakikipag-interact sa iyo gaano kasi hindi pa rin ako sanay. I just can't get over all that has happened but I'm gradually trying to accept it all. Nevertheless, thank you for being tough and still standing right now regardless of all that you've been through these past few months. I'm sorry if I haven't been a good daughter to you, though I'm trying my best to be better. <br><br>
+             Happy birthday, and I'm really sorry. I hope our family can still be happy regardless of the issues and obstacles we've all been through. It may take a while for me to be fully comfortable around you, so thank you for your patience as well. I appreciate it all even though I don't show it. Thank you also for all that you've given me for my birthday yesterday. Moreover, I hope you don't mix up my clothes and undies at home. Ayos lang sana kung ibang damit, huwag lang underwears ko. Thank you, ito lang muna sa ngayon kasi inaantok na ako at may pasok pa bukas. Thank you for having the time to read all of this. Happy birthday! <br><br>
+            Yours truly,<br>
+            Your Daughter, Angela ❤️
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ribbon" id="ribbon">FOR YOU ❤️</div>
+  </div>
+</div>
+
+<script>
+const envelope = document.getElementById('envelope');
+const card = document.getElementById('card');
+const flap = envelope.querySelector('.flap');
+const front = envelope.querySelector('.front');
+const hearts = document.getElementById('hearts');
+
+function spawnHearts(count=12){
+  const colors = ['#ffd6e0','#ffd0d0','#ffb6c1','#ffe6f0','#ffdede'];
+  for(let i=0;i<count;i++){
+    const h = document.createElement('div');
+    h.className='heart';
+    const size = 8 + Math.random()*28;
+    h.style.width = h.style.height = size+'px';
+    h.style.left = Math.random()*100+'vw';
+    h.style.background = colors[Math.floor(Math.random()*colors.length)];
+    h.style.opacity = (0.35+Math.random()*0.6).toString();
+    h.style.animationDuration = (3800 + Math.random()*5200)+'ms';
+    hearts.appendChild(h);
+    setTimeout(()=>h.remove(),11000);
+  }
+}
+
+function playMelody(){
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const now = ctx.currentTime;
+    const notes = [523.25,659.25,783.99,987.77];
+    let t = 0;
+    notes.forEach(f => {
+      const o = ctx.createOscillator();
+      const g = ctx.createGain();
+      o.type = 'sine';
+      o.frequency.value = f;
+      o.connect(g);
+      g.connect(ctx.destination);
+      o.start(now+t);
+      g.gain.setValueAtTime(0, now+t);
+      g.gain.linearRampToValueAtTime(0.12, now+t+0.02);
+      g.gain.linearRampToValueAtTime(0, now+t+0.34);
+      o.stop(now+t+0.36);
+      t += 0.36;
+    });
+  } catch(e){ console.warn('Audio failed', e); }
+}
+
+function launchConfetti(){
+  const emojis=['🎉','🎂','🎈','✨'];
+  for(let i=0;i<16;i++){
+    const el = document.createElement('div');
+    el.textContent = emojis[Math.floor(Math.random()*emojis.length)];
+    el.style.position='fixed';
+    el.style.left=(10+Math.random()*80)+'%';
+    el.style.top=(8+Math.random()*22)+'%';
+    el.style.fontSize=(12+Math.random()*26)+'px';
+    el.style.pointerEvents='none';
+    el.style.opacity=0.95;
+    document.body.appendChild(el);
+    setTimeout(()=>{
+      el.style.transform='translateY('+(260+Math.random()*180)+'px) rotate('+(Math.random()*360)+'deg)';
+      el.style.transition='all 1400ms cubic-bezier(.2,.9,.25,1)';
+      el.style.opacity=0;
+    },10);
+    setTimeout(()=>el.remove(),1800);
+  }
+}
+
+function toggleEnvelope(){
+  if(envelope.classList.contains('open')){
+    flap.style.transform='rotateX(0)';
+    front.style.transform='translateY(0)';
+    card.classList.remove('open');
+    envelope.classList.remove('open');
+    spawnHearts(6);
+  } else {
+    flap.style.transform='rotateX(180deg) translateY(-100%)';
+    front.style.transform='translateY(-120%) scale(0.95)';
+    card.classList.add('open');
+    envelope.classList.add('open');
+    playMelody();
+    launchConfetti();
+    spawnHearts(16);
+  }
+}
+
+envelope.addEventListener('click', toggleEnvelope);
+envelope.addEventListener('keydown', e => {
+  if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); toggleEnvelope(); }
+});
+
+spawnHearts(10);
+envelope.tabIndex = 0;
+</script>
+</body>
+</html>
